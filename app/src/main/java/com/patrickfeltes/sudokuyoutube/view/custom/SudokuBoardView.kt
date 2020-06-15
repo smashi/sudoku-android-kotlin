@@ -3,7 +3,6 @@ package com.patrickfeltes.sudokuyoutube.view.custom
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import com.patrickfeltes.sudokuyoutube.game.Cell
@@ -21,7 +20,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
     private var selectedRow = 0
     private var selectedCol = 0
 
-    private var listener: SudokuBoardView.OnTouchListener? = null
+    private var listener: OnTouchListener? = null
 
     private var cells: List<Cell>? = null
 
@@ -203,7 +202,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
         invalidate()
     }
 
-    fun registerListener(listener: SudokuBoardView.OnTouchListener) {
+    fun registerListener(listener: OnTouchListener) {
         this.listener = listener
     }
 
