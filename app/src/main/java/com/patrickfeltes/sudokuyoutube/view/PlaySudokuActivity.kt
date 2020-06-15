@@ -43,7 +43,11 @@ class PlaySudokuActivity : AppCompatActivity(), SudokuBoardView.OnTouchListener 
     }
 
     private fun updateCells(cells: List<Cell>?) = cells?.let {
-        sudokuBoardView.updateCells(cells)
+        if (viewModel.sudokuGame.isSolved) {
+            sudokuBoardView.updateCells(viewModel.sudokuGame.generateBoard().cells)
+        } else {
+            sudokuBoardView.updateCells(cells)
+        }
     }
 
     private fun updateSelectedCellUI(cell: Pair<Int, Int>?) = cell?.let {

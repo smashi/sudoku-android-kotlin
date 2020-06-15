@@ -12,17 +12,43 @@ class SudokuGame {
     private var selectedRow = -1
     private var selectedCol = -1
     private var isTakingNotes = false
+    var isSolved = false
 
-    private val board: Board
+    private val gridGenerator = GridGenerator()
+    private var board: Board
 
     init {
-        val cells = List(9 * 9) {i -> Cell(i / 9, i % 9, i % 9)}
-        cells[0].notes = mutableSetOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
-        board = Board(9, cells)
+        board = generateBoard()
 
         selectedCellLiveData.postValue(Pair(selectedRow, selectedCol))
         cellsLiveData.postValue(board.cells)
         isTakingNotesLiveData.postValue(isTakingNotes)
+    }
+
+    fun generateBoard(): Board {
+        val cells = List(9 * 9) { i -> Cell(i / 9, i % 9, 0) }
+        board = Board(9, cells)
+        println("### generate grid ###")
+        var valid: Boolean
+        lateinit var grid: IntArray
+        do {
+            grid = gridGenerator.generateGrid()
+            println("### print grid ###")
+            gridGenerator.printGrid(grid)
+            println("### done grid ###")
+            valid = gridGenerator.isPerfect(grid)
+            println("is valid: $valid")
+        } while (!valid)
+
+        val test = IntArray(79)
+        for (i in test.indices) {
+            test[i] = (0..80).random()
+        }
+        for (i in test.indices) {
+            cells[test[i]].value = grid[test[i]]
+            cells[test[i]].isStartingCell = true
+        }
+        return board
     }
 
     fun handleInput(number: Int) {
@@ -41,8 +67,8 @@ class SudokuGame {
             cell.value = number
         }
         cellsLiveData.postValue(board.cells)
+        isSolved = gridGenerator.isPerfect(board.getValues())
     }
-
 
     fun updateSelectedCell(row: Int, col: Int) {
         val cell = board.getCell(row, col)

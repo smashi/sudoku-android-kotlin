@@ -118,8 +118,8 @@ internal class GridGenerator {
                                                 val pacing =
                                                     if (a % 2 == 0) rowOrigin + b else colOrigin + b * 9
                                                 if (grid[pacing] == searchingNo) {
-                                                    var adjacentCell = -1
-                                                    var adjacentNo = -1
+                                                    var adjacentCell: Int
+                                                    var adjacentNo: Int
                                                     val decrement = if (a % 2 == 0) 9 else 1
                                                     for (c in 1 until 3 - i % 3) {
                                                         adjacentCell =
@@ -179,83 +179,64 @@ internal class GridGenerator {
         return grid
     }
 
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            var trials = 0
-            while (true) {
-                val sudoku = GridGenerator()
-                trials++
-                //average solution time hovers around 7 microseconds (~0.000007 seconds)
-                //not including time it takes for print statements, which eats up BUTT-LOADS of time and slows down the output 10-fold
-                if (isPerfect(sudoku.generateGrid())) println(
-                    "PERFECT GRID #" + String.format(
-                        "%,d",
-                        trials
-                    )
-                )
+    /**
+     * Prints a visual representation of a 9x9 Sudoku grid
+     * @param grid an array with length 81 to be printed
+     */
+    fun printGrid(grid: IntArray) {
+        require(grid.size == 81) { "The grid must be a single-dimension grid of length 81" }
+        for (i in 0..80) {
+            print("[" + grid[i] + "] " + if (i % 9 == 8) "\n" else "")
+        }
+    }
+
+    /**
+     * Tests an int array of length 81 to see if it is a valid Sudoku grid. i.e. 1 through 9 appearing once each in every row, column, and box
+     * @param grid an array with length 81 to be tested
+     * @return a boolean representing if the grid is valid
+     */
+    fun isPerfect(grid: IntArray): Boolean {
+        require(grid.size == 81) { "The grid must be a single-dimension grid of length 81" }
+
+        //tests to see if the grid is perfect
+
+        //for every box
+        for (i in 0..8) {
+            val registered = BooleanArray(10)
+            registered[0] = true
+            val boxOrigin = i * 3 % 9 + i * 3 / 9 * 27
+            for (j in 0..8) {
+                val boxStep = boxOrigin + j / 3 * 9 + j % 3
+                val boxNum = grid[boxStep]
+                registered[boxNum] = true
             }
+            for (b in registered) if (!b) return false
         }
 
-        /**
-         * Prints a visual representation of a 9x9 Sudoku grid
-         * @param grid an array with length 81 to be printed
-         */
-        fun printGrid(grid: IntArray) {
-            require(grid.size == 81) { "The grid must be a single-dimension grid of length 81" }
-            for (i in 0..80) {
-                print("[" + grid[i] + "] " + if (i % 9 == 8) "\n" else "")
+        //for every row
+        for (i in 0..8) {
+            val registered = BooleanArray(10)
+            registered[0] = true
+            val rowOrigin = i * 9
+            for (j in 0..8) {
+                val rowStep = rowOrigin + j
+                val rowNum = grid[rowStep]
+                registered[rowNum] = true
             }
+            for (b in registered) if (!b) return false
         }
 
-        /**
-         * Tests an int array of length 81 to see if it is a valid Sudoku grid. i.e. 1 through 9 appearing once each in every row, column, and box
-         * @param grid an array with length 81 to be tested
-         * @return a boolean representing if the grid is valid
-         */
-        fun isPerfect(grid: IntArray): Boolean {
-            require(grid.size == 81) { "The grid must be a single-dimension grid of length 81" }
-
-            //tests to see if the grid is perfect
-
-            //for every box
-            for (i in 0..8) {
-                val registered = BooleanArray(10)
-                registered[0] = true
-                val boxOrigin = i * 3 % 9 + i * 3 / 9 * 27
-                for (j in 0..8) {
-                    val boxStep = boxOrigin + j / 3 * 9 + j % 3
-                    val boxNum = grid[boxStep]
-                    registered[boxNum] = true
-                }
-                for (b in registered) if (!b) return false
+        //for every column
+        for (i in 0..8) {
+            val registered = BooleanArray(10)
+            registered[0] = true
+            for (j in 0..8) {
+                val colStep = i + j * 9
+                val colNum = grid[colStep]
+                registered[colNum] = true
             }
-
-            //for every row
-            for (i in 0..8) {
-                val registered = BooleanArray(10)
-                registered[0] = true
-                val rowOrigin = i * 9
-                for (j in 0..8) {
-                    val rowStep = rowOrigin + j
-                    val rowNum = grid[rowStep]
-                    registered[rowNum] = true
-                }
-                for (b in registered) if (!b) return false
-            }
-
-            //for every column
-            for (i in 0..8) {
-                val registered = BooleanArray(10)
-                registered[0] = true
-                for (j in 0..8) {
-                    val colStep = i + j * 9
-                    val colNum = grid[colStep]
-                    registered[colNum] = true
-                }
-                for (b in registered) if (!b) return false
-            }
-            return true
+            for (b in registered) if (!b) return false
         }
+        return true
     }
 }

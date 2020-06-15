@@ -80,7 +80,7 @@ class SudokuBoardView(context: Context, attributeSet: AttributeSet) : View(conte
         drawText(canvas)
     }
 
-    private fun updateMeasurements(width: Int) {
+    private fun     updateMeasurements(width: Int) {
         cellSizePixels = width / size.toFloat()
         noteSizePixels = cellSizePixels / sqrtSize.toFloat()
         noteTextPaint.textSize = cellSizePixels / sqrtSize.toFloat()
