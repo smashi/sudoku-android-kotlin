@@ -1,13 +1,13 @@
 package com.patrickfeltes.sudokuyoutube.view
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.patrickfeltes.sudokuyoutube.R
 import com.patrickfeltes.sudokuyoutube.game.Cell
 import com.patrickfeltes.sudokuyoutube.view.custom.SudokuBoardView

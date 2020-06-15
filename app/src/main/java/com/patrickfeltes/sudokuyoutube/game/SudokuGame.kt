@@ -1,7 +1,7 @@
 package com.patrickfeltes.sudokuyoutube.game
 
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 
 class SudokuGame {
 
