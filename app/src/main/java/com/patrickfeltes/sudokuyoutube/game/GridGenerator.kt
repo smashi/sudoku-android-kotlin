@@ -2,6 +2,11 @@ package com.patrickfeltes.sudokuyoutube.game
 
 import java.util.*
 
+/**
+ * copied from https://github.com/mfgravesjr/finished-projects/blob/master/SudokuGridGenerator/SudokuGridGenerator.java 
+ * and converted to kotlin
+ */
+
 /*
  * per box formula
  * this formula goes through each box instead of the natural order
